@@ -87,7 +87,7 @@ class _PostCreateState extends State<CreatePost> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: TextFormField(
-                        controller: postController.userId,
+                        controller: postController.userIdController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -107,7 +107,7 @@ class _PostCreateState extends State<CreatePost> {
                   GestureDetector(
                     onTap: () {
                       if (formkey.currentState!.validate()) {
-                        postController.createTodo();
+                        postController.createPost();
                       }
                     },
                     child: Container(

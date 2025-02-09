@@ -88,7 +88,7 @@ class _PostEditState extends State<EditPost> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: TextFormField(
-                        controller: postController.userId,
+                        controller: postController.userIdController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -108,7 +108,7 @@ class _PostEditState extends State<EditPost> {
                   GestureDetector(
                     onTap: () {
                       if (formkey.currentState!.validate()) {
-                        postController.editTodo(widget.postData.id);
+                        postController.editPost(widget.postData.id);
                       }
                     },
                     child: Container(

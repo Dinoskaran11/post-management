@@ -10,7 +10,7 @@ class PostViewmodel extends ChangeNotifier {
   final NavigationService _navigationService;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController userId = TextEditingController();
+  TextEditingController userIdController = TextEditingController();
   List<PostModel> allPosts = [];
 
   PostViewmodel(this._navigationService) {
@@ -18,13 +18,16 @@ class PostViewmodel extends ChangeNotifier {
   }
 
   navigateToCreate() {
+    titleController.clear();
+      descriptionController.clear();
+      userIdController.clear();
     _navigationService.navigate(const CreatePost());
   }
 
   navigateToEdit(PostModel data) {
     titleController.text = data.title.toString();
     descriptionController.text = data.body.toString();
-    userId.text = data.userId.toString();
+    userIdController.text = data.userId.toString();
     _navigationService.navigate(EditPost(postData: data));
   }
 
@@ -44,12 +47,13 @@ class PostViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  createTodo() async {
+  createPost() async {
     _navigationService.showLoader();
+    
     var resData = await ApiProvider().post('/posts', {
       "title": titleController.text,
       "body": descriptionController.text,
-      "userId": int.tryParse(userId.text)
+      "userId": int.tryParse(userIdController.text)
     });
 
     if (resData != null) {
@@ -58,16 +62,18 @@ class PostViewmodel extends ChangeNotifier {
       _navigationService.navigate(PostList());
       titleController.clear();
       descriptionController.clear();
+      userIdController.clear();
     } else {
       print('Error: API response was not successful or was null');
     }
   }
 
-  editTodo(id) async {
+  editPost(id) async {
     _navigationService.showLoader();
     var resData = await ApiProvider().put('/posts/$id', {
       "todo_title": titleController.text,
-      "todo_description": descriptionController.text
+      "todo_description": descriptionController.text,
+      "userId": int.tryParse(userIdController.text)
     });
     print('API Response: $resData');
     if (resData != null) {
@@ -76,14 +82,15 @@ class PostViewmodel extends ChangeNotifier {
       _navigationService.navigate(PostList());
       titleController.clear();
       descriptionController.clear();
+      userIdController.clear();
     } else {
       print('Error: API response was not successful or was null');
     }
   }
 
-  deleteTodo(id, index) async {
+  deletePost(id, index) async {
     _navigationService.showLoader();
-    var resData = await ApiProvider().delete('/api/users/$id');
+    var resData = await ApiProvider().delete('/posts/$id');
     _navigationService.goback();
     if (resData) {
       allPosts.removeAt(index);

@@ -58,7 +58,7 @@ class PostCard extends StatelessWidget {
               postController.navigateToEdit(post);
             }
             if (value == 'delete') {
-              postController.deleteTodo(post.id.toString(), index);
+              postController.deletePost(post.id.toString(), index);
             }
           },
         ),
